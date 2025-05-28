@@ -1,0 +1,92 @@
+<div class="container py-4 bg-light rounded-4 shadow-sm">
+
+  <!-- Search + Actions -->
+  <div class="row mb-4 align-items-center">
+    <div class="col-md-6 mb-2">
+      <input
+        type="text"
+        class="form-control border-primary shadow-sm"
+        [(ngModel)]="searchTerm"
+        (input)="getEmployees()"
+        placeholder="🔍 Search by name or email"
+      />
+    </div>
+    <div class="col-md-6 d-flex gap-2 justify-content-md-end justify-content-center">
+      <button class="btn btn-outline-primary px-4 shadow-sm" (click)="addEmployee()">
+  ➕ Add Employee
+</button>
+      <button class="btn btn-sm btn-outline-warning me-1 shadow-sm" (click)="openEditForm()">
+  ✏️ Edit
+</button>
+      <button
+        class="btn btn-outline-danger px-4 shadow-sm"
+        (click)="deleteSelected()"
+        [disabled]="selectedEmployees.size === 0"
+      >
+        🗑️ Delete Selected
+      </button>
+
+      
+    </div>
+  </div>
+<!-- Edit Form Section -->
+
+  <div *ngIf="showEditForm" class="mb-4">
+  <div class="card shadow-sm p-3">
+    <button class="btn-close float-end" (click)="closeEditForm()"></button>
+
+    <app-edit-employee
+      [employeeData]="selectedEmployee"
+      (cancel)="closeEditForm()"
+      (success)="onEditSuccess()"
+    ></app-edit-employee>
+  </div>
+</div>
+
+  <!-- Table -->
+  <div class="table-responsive">
+    <table class="table table-bordered text-center align-middle bg-white shadow-sm">
+      <thead class="table-primary text-dark">
+        <tr>
+          <th>
+            <input
+              type="checkbox"
+              (change)="toggleAllSelections()"
+              [checked]="selectedEmployees.size === employees.length && employees.length > 0"
+            />
+          </th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Address</th>
+          <th>Phone</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let emp of employees; trackBy: trackById">
+          <td>
+            <input
+              type="checkbox"
+              [checked]="selectedEmployees.has(emp.id)"
+              (change)="toggleSelection(emp.id)"
+            />
+          </td>
+          <td>{{ emp.name }}</td>
+          <td>{{ emp.email }}</td>
+          <td>{{ emp.address }}</td>
+          <td>{{ emp.phone }}</td>
+          <td>
+            <!-- <button class="btn btn-sm btn-outline-warning me-1 shadow-sm" (click)="openEditForm(emp)">
+  ✏️ Edit
+</button> -->
+
+            <button class="btn btn-sm btn-outline-danger shadow-sm" (click)="deleteEmployee(emp.id)">
+              ❌ Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+
+    </table>
+  </div>
+</div>
