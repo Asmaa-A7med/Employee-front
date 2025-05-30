@@ -6,28 +6,44 @@ import { environment } from '../environment/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class EmployeeService {
+export class EmployeeService { 
 
-  private apiUrl = environment.apiUrl + '/employees';
-
-  constructor(private http: HttpClient) {}
+   constructor(private http: HttpClient) {}
 
   getAll(search = ''): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}?search=${search}`);
+    const url = search
+      ? `${environment.apiUrl}/employees/search?term=${search}`
+      : `${environment.apiUrl}/employees`;
+    return this.http.get<any[]>(url);
   }
-
-  delete(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`);
-  }
-
-  deleteMultiple(ids: number[]): Observable<any> {
-    return this.http.post(`${this.apiUrl}/delete-multiple`, ids);
-  }
-addEmployee(data: any) {
-  return this.http.post('api/employees', data);  
+getAllEmployees(): Observable<any[]> {
+  return this.http.get<any[]>(`${environment.apiUrl}/employees/all`);
 }
-updateEmployee(id: number, data: any) {
-  return this.http.put(`${this.apiUrl}/${id}`, data);
+
+delete(id: number): Observable<any> {
+  return this.http.delete(`${environment.apiUrl}/employees/delete/${id}`);
+}
+
+
+deleteMultiple(ids: number[]): Observable<any> {
+  return this.http.delete(`${environment.apiUrl}/employees/delete-multiple`, {
+    body: ids
+  });
+}
+
+
+addEmployee(data: any): Observable<any> {
+  return this.http.post(`${environment.apiUrl}/employees/add`, data);
+}
+
+
+  updateEmployee(id: number, data: any): Observable<any> {
+  return this.http.put(`${environment.apiUrl}/employees/update/${id}`, data);
+}
+
+getPaginatedEmployees(pageNumber: number, pageSize: number): Observable<any> {
+  const url = `${environment.apiUrl}/employees/paginated?pageNumber=${pageNumber}&pageSize=${pageSize}`;
+  return this.http.get<any>(url);
 }
 
 }

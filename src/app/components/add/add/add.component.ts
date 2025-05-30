@@ -4,6 +4,8 @@ import { EmployeeService } from '../../../service/employee.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { environment } from '../../../environment/environment';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-add',
@@ -28,15 +30,33 @@ export class AddComponent implements OnInit {
   get f() {
     return this.employeeForm.controls;
   }
-
-  onSubmit() {
-    if (this.employeeForm.valid) {
-      this.service.addEmployee(this.employeeForm.value).subscribe(() => {
-        alert('Employee added successfully!');
-        this.router.navigate(['/manage']);
-      });
-    }
+onSubmit() {
+  if (this.employeeForm.valid) {
+    console.log('Sending data to:', `${environment.apiUrl}/employees`);
+    console.log('Payload:', this.employeeForm.value);
+    this.service.addEmployee(this.employeeForm.value).subscribe({
+      next: () => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Employee added successfully!',
+          confirmButtonText: 'OK',
+        }).then(() => {
+          this.router.navigate(['/manage']);
+        });
+      },
+      error: err => {
+        console.error('Error adding employee:', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Failed to add employee. Please try again later.',
+        });
+      }
+    });
   }
+}
+
 
   onCancel() {
     this.router.navigate(['/manage']);
