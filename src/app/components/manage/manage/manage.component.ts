@@ -29,6 +29,9 @@ export class ManageComponent implements OnInit {
 pageSize = 10;
 totalCount = 0;
 
+sortKey: string = '';
+sortDirection: 'asc' | 'desc' = 'asc';
+
 ngOnInit() {
   this.getEmployees();
 }
@@ -37,19 +40,54 @@ ngOnInit() {
   addEmployee() {
     this.router.navigate(['/add']);
   }
+   
+
 
 getEmployees() {
   if (!this.searchTerm.trim()) {
     this.employeeService.getPaginatedEmployees(this.currentPage, this.pageSize).subscribe((response) => {
       this.employees = response.data;  
       this.totalCount = response.totalCount;  
+       this.applySort();
     });
   } else {
     this.employeeService.getAll(this.searchTerm).subscribe(data => {
       this.employees = data;
       this.totalCount = data.length;
+       this.applySort();
     });
   }
+}
+ sortBy(key: string) {
+  if (this.sortKey === key) {
+    this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+  } else {
+    this.sortKey = key;
+    this.sortDirection = 'asc';
+  }
+  this.applySort();
+}
+
+applySort() {
+  if (this.sortKey) {
+    this.sortEmployees(this.sortKey);
+  }
+}
+
+sortEmployees(key: string) {
+  this.employees.sort((a, b) => {
+    let aValue = a[key];
+    let bValue = b[key];
+ 
+    if (typeof aValue === 'string') {
+      aValue = aValue.toLowerCase();
+      bValue = bValue.toLowerCase();
+    }
+
+    if (aValue < bValue) return this.sortDirection === 'asc' ? -1 : 1;
+    if (aValue > bValue) return this.sortDirection === 'asc' ? 1 : -1;
+    return 0;
+  });
 }
 
 
