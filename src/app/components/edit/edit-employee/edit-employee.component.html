@@ -1,51 +1,52 @@
-<h2 class="text-center mb-4">Edit Employee</h2>
+<h2 class="text-center mb-4">{{ 'editEmployee.title' | translate }}</h2>
 
 <form *ngIf="employeeForm" [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
 
   <div class="form-group mb-3">
-    <label for="name">Name</label>
+    <label for="name">{{ 'editEmployee.form.nameLabel' | translate }}</label>
     <input type="text" id="name" class="form-control" formControlName="name">
     <div *ngIf="f['name'].touched && f['name'].invalid" class="text-danger">
-      Name is required.
+      {{ 'editEmployee.form.nameRequired' | translate }}
     </div>
   </div>
 
   <div class="form-group mb-3">
-    <label for="email">Email</label>
+    <label for="email">{{ 'editEmployee.form.emailLabel' | translate }}</label>
     <input type="email" id="email" class="form-control" formControlName="email">
     <div *ngIf="f['email'].touched && f['email'].errors?.['required']" class="text-danger">
-      Email is required.
+      {{ 'editEmployee.form.emailRequired' | translate }}
     </div>
     <div *ngIf="f['email'].touched && f['email'].errors?.['email']" class="text-danger">
-      Email must be valid.
+      {{ 'editEmployee.form.emailInvalid' | translate }}
     </div>
     <div *ngIf="f['email'].touched && f['email'].errors?.['pattern']" class="text-danger">
-      Email must end with .com
+      {{ 'editEmployee.form.emailPattern' | translate }}
     </div>
   </div>
 
   <div class="form-group mb-3">
-    <label for="address">Address</label>
+    <label for="address">{{ 'editEmployee.form.addressLabel' | translate }}</label>
     <input type="text" id="address" class="form-control" formControlName="address">
     <div *ngIf="f['address'].touched && f['address'].invalid" class="text-danger">
-      Address is required.
+      {{ 'editEmployee.form.addressRequired' | translate }}
     </div>
   </div>
 
   <div class="form-group mb-3">
-    <label for="phone">Phone</label>
+    <label for="phone">{{ 'editEmployee.form.phoneLabel' | translate }}</label>
     <input type="text" id="phone" class="form-control" formControlName="phone">
     <div *ngIf="f['phone'].touched && f['phone'].errors?.['required']" class="text-danger">
-      Phone number is required.
+      {{ 'editEmployee.form.phoneRequired' | translate }}
     </div>
     <div *ngIf="f['phone'].touched && f['phone'].errors?.['pattern']" class="text-danger">
-      Phone number must be 11 digits.
+      {{ 'editEmployee.form.phonePattern' | translate }}
     </div>
   </div>
 
   <div class="d-flex justify-content-end">
-    <button type="submit" class="btn btn-success me-2" [disabled]="employeeForm.invalid">Update</button>
-    <!-- <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button> -->
+    <button type="submit" class="btn btn-success me-2" [disabled]="employeeForm.invalid">
+      {{ 'editEmployee.form.submitButton' | translate }}
+    </button>
   </div>
 
 </form>

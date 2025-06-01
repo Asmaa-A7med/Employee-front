@@ -7,7 +7,8 @@ import {TranslateModule, TranslateLoader} from "@ngx-translate/core";
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 
 const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (http: HttpClient) =>
-    new TranslateHttpLoader(http, './i18n/', '.json');
+new TranslateHttpLoader(http, './assets/i18n/', '.json');
+
 
 
 export const appConfig: ApplicationConfig = {
@@ -24,3 +25,4 @@ export const appConfig: ApplicationConfig = {
      })])
   ],
 }
+//E:\asmaa\Employees\Emloyee-Front\src\app\assets\i18n

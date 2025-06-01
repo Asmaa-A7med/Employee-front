@@ -4,10 +4,11 @@ import { EmployeeService } from '../../../service/employee.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-edit-employee',
-  imports: [ReactiveFormsModule ,CommonModule],
+  imports: [ReactiveFormsModule ,CommonModule,TranslateModule  ],
   templateUrl: './edit-employee.component.html',
   styleUrl: './edit-employee.component.css'
 })
@@ -18,7 +19,12 @@ export class EditEmployeeComponent  implements OnInit, OnChanges  {
 
   employeeForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private service: EmployeeService,private router:Router) {}
+  constructor(private fb: FormBuilder, private service: EmployeeService,private router:Router ,private translate: TranslateService) {
+      
+    this.translate.addLangs(['de', 'en']);
+    this.translate.setDefaultLang('en');
+    this.translate.use('en');
+  }
 
   ngOnInit(): void {
     if (this.employeeData) {

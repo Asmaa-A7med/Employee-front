@@ -6,17 +6,23 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { environment } from '../../../environment/environment';
 import Swal from 'sweetalert2';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-add',
-  imports: [CommonModule, FormsModule,ReactiveFormsModule],
+  imports: [CommonModule, FormsModule,ReactiveFormsModule,TranslateModule ],
   templateUrl: './add.component.html',
   styleUrl: './add.component.css'
 })
 export class AddComponent implements OnInit {
   employeeForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private service: EmployeeService, private router: Router) {}
+  constructor(private fb: FormBuilder, private service: EmployeeService, private router: Router,private translate: TranslateService) {
+      this.translate.addLangs(['de', 'en']);
+    this.translate.setDefaultLang('en');
+    this.translate.use('en');
+  }
+  
 
   ngOnInit(): void {
     this.employeeForm = this.fb.group({

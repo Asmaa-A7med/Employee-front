@@ -1,22 +1,29 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component, inject, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { EditEmployeeComponent } from '../../edit/edit-employee/edit-employee.component';
 import Swal from 'sweetalert2';
 import { EmployeeService } from '../../../service/employee.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import {TranslationService} from '../../../service/translation-service.service'
 
 @Component({
   selector: 'app-manage',
   standalone: true,  
-  imports: [CommonModule, FormsModule, HttpClientModule,  EditEmployeeComponent] ,
+  imports: [CommonModule, FormsModule,ReactiveFormsModule, HttpClientModule,  EditEmployeeComponent,TranslateModule] ,
   templateUrl: './manage.component.html',
   styleUrl: './manage.component.css'
 })
 export class ManageComponent implements OnInit {
-
-  constructor(private router: Router, private employeeService: EmployeeService) {}
+currentLang = 'en';
+  employeeForm!: FormGroup;
+  constructor(private router: Router, private employeeService: EmployeeService,private translate: TranslateService, private fb: FormBuilder,private _TranslationService:TranslationService) {
+    this.translate.addLangs(['ar', 'en']);
+    this.translate.setDefaultLang('en');
+    this.translate.use('en');
+  }
 
   employees: any[] = [];
   selectedEmployees: Set<number> = new Set();
@@ -35,12 +42,27 @@ sortDirection: 'asc' | 'desc' = 'asc';
 ngOnInit() {
   this.getEmployees();
 }
+changeLang(event: Event) {
+  const selectedLang = (event.target as HTMLSelectElement).value;
+  //  this.currentLang = selectedLang;
+  // document.body.classList.remove('ltr', 'rtl');
+  // document.body.classList.add(selectedLang === 'ar' ? 'rtl' : 'ltr');
+    this.currentLang = selectedLang;
+  this._TranslationService.setLanguage(selectedLang); // أو this.translate.use(selectedLang)
+ 
+}
 
-
+changeLanguage(event: Event) {
+  debugger
+  const selectedLang = (event.target as HTMLSelectElement).value;
+  this._TranslationService.setLanguage(selectedLang); // أو this.translate.use(selectedLang
+}
   addEmployee() {
     this.router.navigate(['/add']);
   }
-   
+     switchLanguage(lang: string) {
+  this.translate.use(lang);
+}
 
 
 getEmployees() {
