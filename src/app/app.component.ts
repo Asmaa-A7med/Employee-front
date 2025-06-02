@@ -27,7 +27,7 @@ export class AppComponent {
   }
 
   setDirection(lang: string) {
-    debugger
+    
     const dir = lang === 'ar' ? 'rtl' : 'ltr';
     document.documentElement.dir = dir;
     document.documentElement.lang = lang;

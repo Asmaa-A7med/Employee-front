@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import { EmployeeService } from '../../../service/employee.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import {TranslationService} from '../../../service/translation-service.service'
+import { ZoomService } from '../../../service/zoom.service';
 
 @Component({
   selector: 'app-manage',
@@ -19,7 +20,7 @@ import {TranslationService} from '../../../service/translation-service.service'
 export class ManageComponent implements OnInit {
 currentLang = 'en';
   employeeForm!: FormGroup;
-  constructor(private router: Router, private employeeService: EmployeeService,private translate: TranslateService, private fb: FormBuilder,private _TranslationService:TranslationService) {
+  constructor(private router: Router, private employeeService: EmployeeService,private translate: TranslateService, private fb: FormBuilder,private _TranslationService:TranslationService, private zoomService: ZoomService) {
     this.translate.addLangs(['ar', 'en']);
     this.translate.setDefaultLang('en');
     this.translate.use('en');
@@ -53,7 +54,7 @@ changeLang(event: Event) {
 }
 
 changeLanguage(event: Event) {
-  debugger
+ 
   const selectedLang = (event.target as HTMLSelectElement).value;
   this._TranslationService.setLanguage(selectedLang); // أو this.translate.use(selectedLang
 }
@@ -213,5 +214,18 @@ changePage(page: number) {
   this.currentPage = page;
   this.getEmployees();
 }
+
+ goToBackendLink() {
+    this.zoomService.createMeeting().subscribe({
+      next: (res) => {
+        if (res && res.start_url) {
+          window.open(res.start_url, '_blank');
+        }
+      },
+      error: (err) => {
+        console.error('Error creating meeting:', err);
+      }
+    });
+  }
 
 }
